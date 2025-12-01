@@ -29,6 +29,7 @@ fn main() {
 
 
     for line in fs::read_to_string(file_path).unwrap().lines() {
+        let start = safe_value;
         println!("{line}");
         print!("start {safe_value}, ");
         // get the letter and the number, put them in different variables
@@ -50,7 +51,7 @@ fn main() {
         else{
             safe_value +=  &caps["value"].parse::<i32>().unwrap();
         }
-
+        let after = safe_value;
 
         // need to count how many times a number goes past a multiple of 100
         // 50 - 68 = -18, 1 count, return to 82
@@ -67,25 +68,30 @@ fn main() {
         // if i start on 0 it shouldnt count
         // if i end on 0 it should count?
 
-        let mut hits =   (safe_value/100).abs();
+        let mut hits =   0;
         // println!("counted {hits} hits");
         print!("after spin {safe_value}, ");
-        if safe_value < 0{
-            safe_value += 100 * hits
+        
+        while safe_value >= 100{
+            safe_value -= 100;
+            hits += 1;
         }
 
-        if safe_value < 0{
-            hits += 1;
+        if safe_value < start && start == 0{
+            hits -= 1;
+        }
+
+        while safe_value < 0{
             safe_value += 100;
-            // safe_value += 100 * hits;
-        }
-        else if safe_value >= 100{
-            safe_value -= 100 * hits;
+            hits += 1
         }
 
-        if safe_value == 0{
+        if after < start && safe_value == 0{
             hits += 1;
         }
+
+
+
         zero_hits += hits;
         println!("end {safe_value}");
         println!("hits: {hits}");
