@@ -23,13 +23,26 @@ fn main() {
     // let mut results = vec![];
 
     // parse the provided ranges into paits
-    let ranges: Vec<(i32, i32)> = re.captures_iter(&line).map(|caps| {
-        let start: i32 = caps.name("start_range").unwrap().as_str().parse::<i32>().unwrap();
-        let end: i32 = caps.name("end_range").unwrap().as_str().parse::<i32>().unwrap();
+    let ranges: Vec<(&str, &str)> = re.captures_iter(&line).map(|caps| {
+        let start = caps.name("start_range").unwrap().as_str();
+        let end = caps.name("end_range").unwrap().as_str();
         (start, end)
     }).collect();
 
     println!("{ranges:?}");
+    for range in ranges{
+        println!("working on: {range:?}");
+        let start = range.0.parse::<i64>().unwrap();
+        let end = range.1.parse::<i64>().unwrap();
+        // println!("{range.0:?} --> {end}");
+        let mut count :i64 = start;
+        while count <= end{
+            // if odd number of didgits, then no match, skip to next loop
+            // if even number, then compare the first and second half
+
+            count += 1;
+        }
+    }
 
 
 }
