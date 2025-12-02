@@ -20,7 +20,7 @@ fn main() {
     let line = fs::read_to_string(file_path).unwrap();
     println!("{line}");
 
-    // let mut results = vec![];
+    let mut invalids: Vec<i64> = Vec::new();
 
     // parse the provided ranges into paits
     let ranges: Vec<(&str, &str)> = re.captures_iter(&line).map(|caps| {
@@ -39,10 +39,30 @@ fn main() {
         while count <= end{
             // if odd number of didgits, then no match, skip to next loop
             // if even number, then compare the first and second half
+            let current = count.to_string();
+            
+            if current.len() % 2 != 1{
+                let half_len = current.len()/2;
+                let half_a = &current[..half_len];
+                let half_b = &current[half_len..];
 
+                let current_str = current.to_string();
+                println!("{current_str} = {half_a} + {half_b}");
+
+                if half_a == half_b{
+                    invalids.push(count);
+                }
+            }
             count += 1;
         }
     }
 
+    println!("{invalids:?}");
+    let mut solution: i64 = 0;
+    for result in invalids{
+        solution += result;
+    }
+    println!("Puzzle Solution: {solution}")
+    // Correct :3
 
 }
