@@ -2,18 +2,23 @@
 use std::fs;
 
 fn main() {
-    println!("Lets begin, day 2, part 1");
-    // let file_path = "src/input.txt";
-    let file_path = "src/example.txt";
+    println!("Lets begin, day 2, both parts!");
+    let file_path = "src/input.txt";
+    // let file_path = "src/example.txt";
 
     let mut total_joltage = 0;
+    let mut count = 0;
     for line in fs::read_to_string(file_path).unwrap().lines() {
-        total_joltage += find_highest_joltage(line);
+        // total_joltage += _find_highest_joltage(line);
+        count += 1;
+        print!("checking bank {count}... ");
+        total_joltage += _find_highest_joltage_part2(line);
+        
     }
-    println!("The total joltage is: {total_joltage}")
+    println!("The total joltage of all {count:?} banks is: {total_joltage}")
 }
 
-fn find_highest_joltage(line : &str) -> u32{
+fn _find_highest_joltage(line : &str) -> u32{
     // comb through to find the highest 2 numbres without breaking ordering
     let mut highest_joltage = 0;
     let line_size = line.chars().count();
@@ -39,24 +44,40 @@ fn find_highest_joltage(line : &str) -> u32{
     return highest_joltage;
 }
 
-// fn find_highest_joltage_recursive(line : &str, start : u32, end : u32, levels : u32) -> u32{
-//     for i in start+1..end{
 
-//     }
-    
-//     return 1;
-// }
+fn _find_highest_joltage_part2(line : &str) -> u64{
+    // should return the highest battery vlaue found in the bank
+    let mut joltage_string:String = "".to_owned();
 
-
-fn get_biggest_digit(line : &str, start : usize) -> u32{
-    let mut biggest = 0;
+    // "take earliest index of highest possible digit until a valid solution is found"
+    // need to keep track of last possible index selectable, start index is last one taken
+    let mut start_index = 0;
+    // let mut end_buffer = 11;
     let line_size = line.chars().count();
-    
-    for i in start..line_size{
-        if line.chars().nth(i).unwrap().to_digit(10).unwrap() > biggest{
-            biggest = line.chars().nth(i).unwrap().to_digit(10).unwrap();
+
+
+    for i in 0..12{ // for each character in the joltage string
+        let mut biggest = 0;
+        let mut biggest_index = 0;
+        let mut view_search : String = "".to_owned();
+        for x in start_index..line_size-(11-i){ //take earliest index of highest possible digit
+            view_search += &line.chars().nth(x).unwrap().to_string();
+            if line.chars().nth(x).unwrap().to_digit(10).unwrap() > biggest{
+                biggest = line.chars().nth(x).unwrap().to_digit(10).unwrap();
+                biggest_index = x+1;
+            }
         }
+        // println!("debug view - {view_search}");
+        joltage_string += &biggest.to_string();
+        start_index = biggest_index;
+        // end_buffer -= 1;
+        
+        
     }
-    return biggest;
+    
+    // println!("{joltage_string}");
+    let joltage = joltage_string.parse::<u64>().unwrap();
+    println!("This banks best joltage is: {joltage:?}");
+    return joltage;
 }
 
