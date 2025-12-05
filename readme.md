@@ -4,10 +4,10 @@ This year I'll be trying to do it in Rust
 ### 2026 Calendar
 ```
   1    2    3    4    5    6
-[**] [**] [**] [  ] [  ] [  ]
+[**] [**] [**] [**] [  ] [  ]
 
   7    8    9   10   11   12 
 [  ] [  ] [  ] [  ] [  ] [  ] 
 
-~~ < 6/24 Stars Collected > ~~
+~~ < 8/24 Stars Collected > ~~
 ```

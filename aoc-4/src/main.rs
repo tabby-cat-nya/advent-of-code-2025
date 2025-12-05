@@ -1,7 +1,7 @@
 use std::fs;
 use grid::*;
 fn main() {
-    println!("Lets begin, day 4, part 1");
+    println!("Lets begin, day 4, part 2");
     let file_path = "src/input.txt";
     // let file_path = "src/example.txt";
 
@@ -44,19 +44,35 @@ fn main() {
         
     }
 
-    println!("{grid:#?}");
+    // println!("{grid:#?}");
 
     // now determine which ones can be removed 
-    let result = access_check(grid, x_size, y_size);
-    println!("Output: {result} rolls are accessible");
+    let mut total_removed = 0;
+    let mut before_action = 0;
+    let mut after_action = 0;
+    let mut changed_grid : Grid<char> = Grid::new(0,0);
+    let mut removed = access_check(grid, x_size, y_size, &mut changed_grid);
+    after_action = removed;
+    total_removed += removed;
+    while after_action > before_action{
+        before_action = after_action;
+        // run it again, add to total
+        let removed_more = access_check(changed_grid.clone(), x_size, y_size, &mut changed_grid);
+        after_action += removed_more;
+        total_removed += removed_more;
+        // println!("total removed so far: {total_removed}")
+    }
 
-    // println!("{grid:#?}");
+    // let result = access_check(grid, x_size, y_size);
+    println!("Output: {total_removed} rolls are accessible");
+
+    // println!("{changed_grid:#?}");
 
     
 
 }
 
-fn access_check(mut grid : Grid<char>, x_size : i32, y_size : i32) -> i32 {
+fn access_check(mut grid : Grid<char>, x_size : i32, y_size : i32, changed_grid : &mut Grid<char>) -> i32 {
     let mut accessible  = 0;
     let mut demo_grid = grid.clone();
 
@@ -92,7 +108,10 @@ fn access_check(mut grid : Grid<char>, x_size : i32, y_size : i32) -> i32 {
         
         
     }
-    println!("{demo_grid:#?}");
+    // println!("{demo_grid:#?}");
+    println!("acessible this pass: {accessible}");
+    *changed_grid = demo_grid;
+    
 
     return accessible;
 }
