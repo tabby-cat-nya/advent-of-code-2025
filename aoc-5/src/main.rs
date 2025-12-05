@@ -2,8 +2,8 @@ use std::fs;
 use regex::Regex;
 fn main() {
     println!("Lets begin, day 5");
-    // let file_path = "src/input.txt";
-    let file_path = "src/example.txt";
+    let file_path = "src/input.txt";
+    // let file_path = "src/example.txt";
 
     let re = Regex::new(r"(?<low>\d*)-(?<high>\d*)").unwrap();
     let mut ranges: Vec<(i64, i64)> = Vec::new();
@@ -82,8 +82,11 @@ fn main() {
 
     let mut last_end = -1; //? 
     for mut range in &mut ranges{
-        if range.0 < last_end{
+        if range.0 <= last_end{
             range.0 = last_end + 1;
+        }
+        if range.1 <= last_end{
+            range.1 = last_end;
         }
         last_end = range.1;
     }
@@ -106,6 +109,7 @@ fn main() {
     
     // too low:     330684820916269
     // too high:    348115621205555
+    // too high:    348115621205536 <-- off by one
     
 
 }
